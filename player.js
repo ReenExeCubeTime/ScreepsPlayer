@@ -8,7 +8,7 @@ module.exports.loop = function () {
         const source = sources[0];
 
         if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
-            console.log('need walk');
+            creep.moveTo(source);
         }
     }
 };
