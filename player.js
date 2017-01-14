@@ -1,5 +1,7 @@
 function loop() {
+    let length = 0;
     for (let index in Game.creeps) {
+        ++length;
         let creep = Game.creeps[index];
         if (creep.carry.energy < creep.carryCapacity) {
             const sources = creep.room.find(FIND_SOURCES);
@@ -15,6 +17,17 @@ function loop() {
             }
         }
     }
+    return length;
 }
 
-module.exports.loop = loop;
+module.exports.loop = function () {
+    if (loop() === 0) {
+        for (let name in Game.spawns) {
+            const spawn = Game.spawns[name];
+
+            spawn.createCreep([MOVE, CARRY, WORK], `harvest${Date.now()}`);
+
+            loop();
+        }
+    }
+};
