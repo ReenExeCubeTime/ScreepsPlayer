@@ -1,4 +1,4 @@
-module.exports.loop = function () {
+function loop() {
     for (let index in Game.creeps) {
         let creep = Game.creeps[index];
         if (creep.carry.energy < creep.carryCapacity) {
@@ -15,4 +15,6 @@ module.exports.loop = function () {
             }
         }
     }
-};
+}
+
+module.exports.loop = loop;
