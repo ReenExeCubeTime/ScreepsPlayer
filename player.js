@@ -1,3 +1,13 @@
+function getSpawn() {
+    return Game.spawns['Spawn1'];
+}
+
+function createCreepHarvest() {
+    const spawn = getSpawn();
+
+    return spawn.createCreep([MOVE, CARRY, WORK], `harvest${Date.now()}`);
+}
+
 function loop() {
     let length = 0;
     for (let index in Game.creeps) {
@@ -11,7 +21,7 @@ function loop() {
                 creep.moveTo(source);
             }
         } else {
-            const spawn = Game.spawns['Spawn1'];
+            const spawn = getSpawn();
             if (creep.transfer(spawn, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(spawn);
             }
@@ -21,13 +31,13 @@ function loop() {
 }
 
 module.exports.loop = function () {
-    if (loop() === 0) {
-        for (let name in Game.spawns) {
-            const spawn = Game.spawns[name];
+    const creepCount = loop();
 
-            spawn.createCreep([MOVE, CARRY, WORK], `harvest${Date.now()}`);
+    if (creepCount === 0) {
+        createCreepHarvest();
 
-            loop();
-        }
+        loop();
+    } else if (creepCount === 1) {
+        createCreepHarvest();
     }
 };
